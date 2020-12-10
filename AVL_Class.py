@@ -1,11 +1,16 @@
 from Node_Class import Node
-
+import random
 class AVL_Tree:
+
+
+    def __init__(self):
+        self.liste_joueurs = []
 
     def insert(self, root, score, player): 
       
         # Step 1 - Perform normal BST 
         if not root: 
+            self.liste_joueurs.append(player[0])
             return Node(player,score) 
         elif score < root.score: 
             root.left = self.insert(root.left, score, player) 
@@ -13,7 +18,9 @@ class AVL_Tree:
             root.right = self.insert(root.right, score, player) 
         else:
             # Same score
+            self.liste_joueurs.append(player[0])
             root.list_player.append(player[0])
+            return root
   
         # Step 2 - Update the height of the  
         # ancestor node 
@@ -69,12 +76,14 @@ class AVL_Tree:
                     root = None
                     return temp 
 
+                self.liste_joueurs.remove(root.list_player[0])
                 temp = self.getMinValueNode(root.right) 
                 root.score = temp.score
                 root.list_player = temp.list_player 
                 root.right = self.delete(root.right, 
                                         temp.score, temp.list_player) 
             else : 
+                self.liste_joueurs.remove(player[0])
                 root.list_player.remove(player[0])
 
         # If the tree has only one node, 
@@ -112,6 +121,11 @@ class AVL_Tree:
   
         return root
     
+    def update(self, root, old_score, player_name, new_score):
+        root = self.delete(root, old_score, player_name)
+        root = self.insert(root, new_score, player_name)
+        return root
+
     def getMinValueNode(self, root): 
         if root is None or root.left is None: 
             return root 
@@ -177,3 +191,5 @@ class AVL_Tree:
     
             # now recur on right child 
             self.printInorder(root.right)
+
+          
