@@ -26,9 +26,19 @@ def Test_Update():
     print()
     myTree.printInorder(root)
 
-def Test_Distribution_Game():
+def Test_Distribution_Random_Games():
     myTree = AVL_Tree()
     distribution_game = Random_Games(myTree,2)
+    
+    i=1
+    for game in distribution_game:
+        print("Poule {} : ".format(i))
+        print(game)
+        print()
+        i+=1
+def Test_Distribution_Ranking_Games():
+    myTree = AVL_Tree()
+    distribution_game = Ranking_Games(myTree,2)
     
     i=1
     for game in distribution_game:
@@ -41,4 +51,5 @@ if __name__ == "__main__":
     #Test_Delete()
     #print()
     #Test_Update()
-    Test_Distribution_Game()
+    #Test_Distribution_Random_Games()
+    Test_Distribution_Ranking_Games()

@@ -191,5 +191,17 @@ class AVL_Tree:
     
             # now recur on right child 
             self.printInorder(root.right)
+    def ListInorder(self,root, liste): 
+        if root: 
+    
+            # First recur on left child 
+            self.ListInorder(root.left, liste) 
+    
+            # then print the data of node 
+            for player in root.list_player:
+                liste.append(player)
+    
+            # now recur on right child 
+            self.ListInorder(root.right, liste)
 
           

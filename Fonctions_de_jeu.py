@@ -31,3 +31,19 @@ def Random_Games(myTree, nb_joueur_par_game = 10):
         liste_distribution_game.append(liste_current_game)
     
     return liste_distribution_game
+
+def Ranking_Games(myTree, nb_joueur_par_game=10):
+    root = Creation_Dummy_Tree(myTree)
+    liste_joueurs_ranked = []
+    myTree.ListInorder(root, liste_joueurs_ranked)
+    nb_games = int(len(liste_joueurs_ranked)/nb_joueur_par_game)
+    liste_games = []
+    for i in range(nb_games):
+        liste_current_game = []
+        for j in range (nb_joueur_par_game):
+            liste_current_game.append(liste_joueurs_ranked[0])
+            liste_joueurs_ranked.remove(liste_joueurs_ranked[0])
+        liste_games.append(liste_current_game)
+
+
+    return liste_games
