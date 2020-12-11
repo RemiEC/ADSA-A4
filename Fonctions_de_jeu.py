@@ -4,7 +4,6 @@ import random
 def Creation_Dummy_Tree(myTree):
 
     root = None
-    
     root = myTree.insert(root, 30, ["Bob"]) 
     root = myTree.insert(root, 20, ["Markus"]) 
     root = myTree.insert(root, 15, ["Vadim"]) 
@@ -14,7 +13,21 @@ def Creation_Dummy_Tree(myTree):
     root = myTree.insert(root, 10, ["Vinhed"]) 
     root = myTree.insert(root, 25, ["Pierre"])
     root = myTree.insert(root, 30, ["Raphael"])
+    return root
 
+def Creation_Blank_Dummy_Tree(myTree):
+
+    root = None
+    root = myTree.insert(root, 0, ["Bob"]) 
+    root = myTree.insert(root, 0, ["Markus"]) 
+    root = myTree.insert(root, 0, ["Vadim"]) 
+    root = myTree.insert(root, 0, ["Yao"]) 
+    root = myTree.insert(root, 0, ["Henry"]) 
+    root = myTree.insert(root, 0, ["Samuel"]) 
+    root = myTree.insert(root, 0, ["Vinhed"]) 
+    root = myTree.insert(root, 0, ["Pierre"])
+    root = myTree.insert(root, 0, ["Raphael"])
+    root = myTree.insert(root, 0, ["Patrick"])
     return root
 
 def Random_Games(root,myTree, nb_joueur_par_game = 10):
@@ -67,6 +80,35 @@ def Manche(root, myTree, nb_joueur_par_game,random_games= False):
         distribution_game = Ranked_Games(root,myTree, nb_joueur_par_game)
     myTree,root = Random_Score_Distribution(root, myTree, distribution_game)
     return myTree,root
+
+def Drop_Worst(root, myTree, nb_worst_players_to_drop):
+    classement = []
+    myTree.ListInorder(root, classement)
+    players_to_be_deleted = classement[:nb_worst_players_to_drop]
+    for player_score in players_to_be_deleted:
+        myTree,root = myTree.delete([player_score[0]])
+    return myTree,root
+
+def Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop):
+    nb_de_manches_ranked = int((len(myTree.liste_joueurs) - taille_top) / nb_worst_players_to_drop)
+    print("Debut de competition !")
+    print()
+    for i in range(3):
+        myTree,root = Manche(root, myTree, nb_joueur_par_game, random_games = True)
+        print("Resultats game random n{}:".format(i+1))
+        myTree.printInorder(root)
+        print()
+    for j in range(nb_de_manches_ranked):
+        myTree,root = Manche(root, myTree, nb_joueur_par_game)
+        print("Resultats game ranked n{}:".format(j+1))
+        myTree.printInorder(root)
+        myTree, root = Drop_Worst(root, myTree, nb_worst_players_to_drop)
+        print()
+        print("Resultats apres drop game ranked n{}:".format(j+1))
+        myTree.printInorder(root)
+        print()
+    
+
     
             
             

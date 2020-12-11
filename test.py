@@ -48,7 +48,7 @@ def Test_Random_Game_Score_Distribution(root, myTree, liste_distribution_game, r
         distribution_game = Ranked_Games(root,myTree, nb_joueur_par_game)
     return distribution_game
 
-def Test_Partie():
+def Test_Manche():
     myTree = AVL_Tree()
     root = Creation_Dummy_Tree(myTree)
     myTree.printInorder(root)
@@ -56,11 +56,19 @@ def Test_Partie():
     myTree,root = Manche(root, myTree, 2, random_games = False)
     myTree.printInorder(root)
 
+def Test_Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop):
+    Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop )
+
 if __name__ == "__main__":
     myTree = AVL_Tree()
-    root = Creation_Dummy_Tree(myTree)
+    root = Creation_Blank_Dummy_Tree(myTree)
     #Test_Delete(root,myTree)
     #Test_Update(root,myTree)
     #Test_Distribution_Random_Games(root,myTree,2)
     #Test_Distribution_Ranked_Games(root,myTree,2)
-    Test_Partie()
+    #Test_Manche()
+    nb_joueur_par_game = 2
+    taille_top = 2
+    nb_worst_players_to_drop = 2
+    Test_Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop)
+    

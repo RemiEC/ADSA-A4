@@ -51,7 +51,7 @@ class AVL_Tree:
             return self.leftRotate(root) 
   
         return root 
-  
+
     ''' Fonction delete qui ne fonctionne pas pour le moment, on verra à la fin du projet si jamais on a le temps
     def delete(self, root, score, player, deletion = True): 
   
