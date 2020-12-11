@@ -1,23 +1,19 @@
 from AVL_Class import *
 from Fonctions_de_jeu import *
 
-def Test_Delete():
-    myTree = AVL_Tree()
-    root = Creation_Dummy_Tree(myTree)
+def Test_Delete(root,myTree):
     print(myTree.liste_joueurs)
     myTree.printInorder(root)
+    #myTree.delete(root, 15, ["Vadim"])
+    myTree.delete(root, 30, ["Bob"])
     myTree.delete(root, 30, ["Raphael"])
-    myTree.delete(root, 20, ["Markus"])
     print()
     print ("Nouvelle version apres Delete")
     print()
     print(myTree.liste_joueurs)
     myTree.printInorder(root)
-    
 
-def Test_Update():
-    myTree = AVL_Tree()
-    root = Creation_Dummy_Tree(myTree)
+def Test_Update(root,myTree):
     myTree.printInorder(root)
     myTree.update(root, 30, ["Raphael"], 15)
     myTree.update(root, 30, ["Bob"], 5)
@@ -26,19 +22,17 @@ def Test_Update():
     print()
     myTree.printInorder(root)
 
-def Test_Distribution_Random_Games():
-    myTree = AVL_Tree()
-    distribution_game = Random_Games(myTree,2)
-    
+def Test_Distribution_Random_Games(root,myTree, nb_joueur_par_game):
+    distribution_game = Random_Games(root,myTree, nb_joueur_par_game)
     i=1
     for game in distribution_game:
         print("Poule {} : ".format(i))
         print(game)
         print()
         i+=1
-def Test_Distribution_Ranking_Games():
-    myTree = AVL_Tree()
-    distribution_game = Ranking_Games(myTree,2)
+
+def Test_Distribution_Ranked_Games(root,myTree, nb_joueur_par_game):
+    distribution_game = Ranked_Games(root,myTree, nb_joueur_par_game)
     
     i=1
     for game in distribution_game:
@@ -47,9 +41,26 @@ def Test_Distribution_Ranking_Games():
         print()
         i+=1
 
+def Test_Random_Game_Score_Distribution(myTree,root,liste_distribution_game, random_games,nb_joueur_par_game):
+    if(random_games):
+        distribution_game = Random_Games(root,myTree, nb_joueur_par_game)
+    else:
+        distribution_game = Ranked_Games(root,myTree, nb_joueur_par_game)
+    return distribution_game
+
+def Test_Partie():
+    myTree = AVL_Tree()
+    root = Creation_Dummy_Tree(myTree)
+    myTree.printInorder(root)
+    print()
+    Manche(myTree,root,2, random_games = False)
+    myTree.printInorder(root)
+
 if __name__ == "__main__":
-    #Test_Delete()
-    #print()
-    #Test_Update()
-    #Test_Distribution_Random_Games()
-    Test_Distribution_Ranking_Games()
+    myTree = AVL_Tree()
+    root = Creation_Dummy_Tree(myTree)
+    Test_Delete(root,myTree)
+    #Test_Update(root,myTree)
+    #Test_Distribution_Random_Games(root,myTree,2)
+    #Test_Distribution_Ranked_Games(root,myTree,2)
+    #Test_Partie()

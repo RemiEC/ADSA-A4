@@ -8,6 +8,7 @@ def Creation_Dummy_Tree(myTree):
     root = myTree.insert(root, 30, ["Bob"]) 
     root = myTree.insert(root, 20, ["Markus"]) 
     root = myTree.insert(root, 15, ["Vadim"]) 
+    root = myTree.insert(root, 50, ["Yao"]) 
     root = myTree.insert(root, 50, ["Henry"]) 
     root = myTree.insert(root, 10, ["Samuel"]) 
     root = myTree.insert(root, 10, ["Vinhed"]) 
@@ -16,24 +17,22 @@ def Creation_Dummy_Tree(myTree):
 
     return root
 
-def Random_Games(myTree, nb_joueur_par_game = 10):
-    root = Creation_Dummy_Tree(myTree)
-    liste_joueurs = myTree.liste_joueurs
-    nb_games = int(len(liste_joueurs)/nb_joueur_par_game)
+def Random_Games(root,myTree, nb_joueur_par_game = 10):
+    liste_joueurs_score = myTree.liste_joueurs.copy()
+    nb_games = int(len(liste_joueurs_score)/nb_joueur_par_game)
     
     liste_distribution_game = []
     for i in range(nb_games):
         liste_current_game = []
         for j in range (nb_joueur_par_game):
-            joueur_random = random.choice(liste_joueurs)
-            liste_current_game.append(joueur_random)
-            liste_joueurs.remove(joueur_random)
+            joueur_score_random = random.choice(liste_joueurs_score)
+            liste_current_game.append(joueur_score_random)
+            liste_joueurs_score.remove(joueur_score_random)
         liste_distribution_game.append(liste_current_game)
     
     return liste_distribution_game
 
-def Ranking_Games(myTree, nb_joueur_par_game=10):
-    root = Creation_Dummy_Tree(myTree)
+def Ranked_Games(root,myTree, nb_joueur_par_game=10):
     liste_joueurs_ranked = []
     myTree.ListInorder(root, liste_joueurs_ranked)
     nb_games = int(len(liste_joueurs_ranked)/nb_joueur_par_game)
@@ -47,3 +46,25 @@ def Ranking_Games(myTree, nb_joueur_par_game=10):
 
 
     return liste_games
+
+# Return a randomized score for each player
+def Random_Score():
+    return random.choice(range(13))
+
+def Random_Score_Distribution(myTree,root,liste_distribution_game):
+    for poule in liste_distribution_game:
+        for joueur_score in poule:
+            old_score = joueur_score[1]
+            new_score = Random_Score() + old_score
+            player_name = joueur_score[0]
+            myTree.update(root,old_score,[player_name],new_score)
+
+def Manche(myTree,root,nb_joueur_par_game,random_games= False):
+    if(random_games):
+        distribution_game = Random_Games(root,myTree, nb_joueur_par_game)
+    else:
+        distribution_game = Ranked_Games(root,myTree, nb_joueur_par_game)
+    Random_Score_Distribution(myTree,root,distribution_game)
+    
+            
+            

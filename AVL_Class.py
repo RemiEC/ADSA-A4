@@ -10,7 +10,7 @@ class AVL_Tree:
       
         # Step 1 - Perform normal BST 
         if not root: 
-            self.liste_joueurs.append(player[0])
+            self.liste_joueurs.append([player[0],score])
             return Node(player,score) 
         elif score < root.score: 
             root.left = self.insert(root.left, score, player) 
@@ -18,7 +18,7 @@ class AVL_Tree:
             root.right = self.insert(root.right, score, player) 
         else:
             # Same score
-            self.liste_joueurs.append(player[0])
+            self.liste_joueurs.append([player[0],score])
             root.list_player.append(player[0])
             return root
   
@@ -52,7 +52,7 @@ class AVL_Tree:
   
         return root 
   
-    def delete(self, root, score, player): 
+    def delete(self, root, score, player, deletion = True): 
   
         # Step 1 - Perform standard BST delete 
         if not root: 
@@ -66,25 +66,39 @@ class AVL_Tree:
   
         else: 
             if(len(root.list_player) == 1):
+
                 if root.left is None: 
                     temp = root.right 
-                    root = None
+                    if(deletion) : self.liste_joueurs.remove([root.list_player[0],root.score])
+                    root = None      
                     return temp 
 
                 elif root.right is None: 
                     temp = root.left 
+                    if(deletion) : self.liste_joueurs.remove([root.list_player[0],root.score])
                     root = None
                     return temp 
 
-                self.liste_joueurs.remove(root.list_player[0])
+                if(deletion) :self.liste_joueurs.remove([root.list_player[0],root.score])
                 temp = self.getMinValueNode(root.right) 
                 root.score = temp.score
                 root.list_player = temp.list_player 
                 root.right = self.delete(root.right, 
-                                        temp.score, temp.list_player) 
+                                        temp.score, temp.list_player, deletion=False) 
+            elif(len(root.list_player) == 0):
+                root = None
+                return root
             else : 
-                self.liste_joueurs.remove(player[0])
-                root.list_player.remove(player[0])
+                if(deletion) : 
+                    self.liste_joueurs.remove([player[0],score])
+                    root.list_player.remove(player[0])
+                else:
+
+                    for element in player.copy():
+                        root.list_player.remove(element)
+                    return self.delete(root, root.score, root.list_player, deletion=False)
+                    
+
 
         # If the tree has only one node, 
         # simply return it 
@@ -199,7 +213,7 @@ class AVL_Tree:
     
             # then print the data of node 
             for player in root.list_player:
-                liste.append(player)
+                liste.append([player,root.score])
     
             # now recur on right child 
             self.ListInorder(root.right, liste)
