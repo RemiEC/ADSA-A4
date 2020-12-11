@@ -4,9 +4,9 @@ from Fonctions_de_jeu import *
 def Test_Delete(root,myTree):
     print(myTree.liste_joueurs)
     myTree.printInorder(root)
-    #myTree.delete(root, 15, ["Vadim"])
-    myTree.delete(root, 30, ["Bob"])
-    myTree.delete(root, 30, ["Raphael"])
+    myTree,root = myTree.delete(["Vadim"])
+    myTree,root = myTree.delete(["Bob"])
+    myTree,root = myTree.delete(["Yao"])
     print()
     print ("Nouvelle version apres Delete")
     print()
@@ -15,8 +15,8 @@ def Test_Delete(root,myTree):
 
 def Test_Update(root,myTree):
     myTree.printInorder(root)
-    myTree.update(root, 30, ["Raphael"], 15)
-    myTree.update(root, 30, ["Bob"], 5)
+    myTree,root = myTree.update(root, ["Bob"], 5)
+    myTree,root = myTree.update(root, ["Raphael"], 15)
     print()
     print ("Nouvelle version apres Update")
     print()
@@ -41,7 +41,7 @@ def Test_Distribution_Ranked_Games(root,myTree, nb_joueur_par_game):
         print()
         i+=1
 
-def Test_Random_Game_Score_Distribution(myTree,root,liste_distribution_game, random_games,nb_joueur_par_game):
+def Test_Random_Game_Score_Distribution(root, myTree, liste_distribution_game, random_games, nb_joueur_par_game):
     if(random_games):
         distribution_game = Random_Games(root,myTree, nb_joueur_par_game)
     else:
@@ -53,14 +53,14 @@ def Test_Partie():
     root = Creation_Dummy_Tree(myTree)
     myTree.printInorder(root)
     print()
-    Manche(myTree,root,2, random_games = False)
+    myTree,root = Manche(root, myTree, 2, random_games = False)
     myTree.printInorder(root)
 
 if __name__ == "__main__":
     myTree = AVL_Tree()
     root = Creation_Dummy_Tree(myTree)
-    Test_Delete(root,myTree)
+    #Test_Delete(root,myTree)
     #Test_Update(root,myTree)
     #Test_Distribution_Random_Games(root,myTree,2)
     #Test_Distribution_Ranked_Games(root,myTree,2)
-    #Test_Partie()
+    Test_Partie()

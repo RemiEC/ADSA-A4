@@ -52,6 +52,7 @@ class AVL_Tree:
   
         return root 
   
+    ''' Fonction delete qui ne fonctionne pas pour le moment, on verra à la fin du projet si jamais on a le temps
     def delete(self, root, score, player, deletion = True): 
   
         # Step 1 - Perform standard BST delete 
@@ -134,11 +135,21 @@ class AVL_Tree:
             return self.leftRotate(root) 
   
         return root
-    
-    def update(self, root, old_score, player_name, new_score):
-        root = self.delete(root, old_score, player_name)
+    '''
+
+    def delete(self, player_name): #pas besoin du score parce qu'on l'a déjà dans la liste des joueurs
+        root_after_deletion = None
+        myTree_after_deletion = AVL_Tree()
+        for joueur_score in self.liste_joueurs:
+            if (joueur_score[0] != player_name[0]):
+                root_after_deletion = myTree_after_deletion.insert(root_after_deletion,joueur_score[1],[joueur_score[0]])
+        return (myTree_after_deletion,root_after_deletion)
+        
+        
+    def update(self, root, player_name, new_score):
+        self,root = self.delete(player_name)
         root = self.insert(root, new_score, player_name)
-        return root
+        return self,root
 
     def getMinValueNode(self, root): 
         if root is None or root.left is None: 
