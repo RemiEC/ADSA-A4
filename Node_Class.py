@@ -1,13 +1,13 @@
 class Node :
 
     '''
-    #* Classe utilisée en tant que node dans l'AVL Tree
+    #* Class used as a node in the AVL Tree
 
-    #? Player : Nom du player
-    #? Score : Score du player
+    #? Player: Player name
+    #? Score: Player score
     '''
     def __init__(self,Player,Score):
-        self.list_player = Player
+        self.liste_joueurs_node = Player
         self.score = Score
         self.left = None
         self.right = None

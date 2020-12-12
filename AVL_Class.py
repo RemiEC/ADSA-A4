@@ -1,37 +1,38 @@
 from Node_Class import Node
 import random
+
 class AVL_Tree:
 
     '''
-    #* Classe utilisée en tant qu'AVL Tree
+    #* Class used as AVL Tree
 
-    #? liste_joueurs : Liste contenant pour chaque joueur, une autre liste composée de son nom et de son score
+    #? liste_joueurs_score : List containing for each player, another list composed of his name and his score
     '''
     def __init__(self):
-        self.liste_joueurs = []
+        self.liste_joueurs_score = []
 
     '''
-    #* Fonction d'insertion d'une nouvelle node dans l'AVL, en effet c'est la variable root qui contiendra véritablement les données
-    #* La classe AVL permet de garantir la nature AVL de root via les différentes fonctions définies dedans
+    #* Function allowing the insertion of a new node in the AVL, indeed it is the root variable which will really contain the data
+    #* The AVL class guarantees the AVL nature of root via the various functions defined in it
 
-    #? root : Root de l'AVL contenant toutes ses nodes enfants
-    #? score : score du player
-    #? player : Liste contenant le nom du player, 
+    #? root : Root of the AVL containing all its child nodes
+    #? score : player score
+    #? joueur : the name of the player to insert
     '''
-    def insert(self, root, score, player): 
+    def insert(self, root, score, joueur): 
       
         # Step 1 - Perform normal BST 
         if not root: 
-            self.liste_joueurs.append([player,score])
-            return Node([player],score) 
+            self.liste_joueurs_score.append([joueur,score])
+            return Node([joueur],score) 
         elif score < root.score: 
-            root.left = self.insert(root.left, score, player) 
+            root.left = self.insert(root.left, score, joueur) 
         elif score > root.score: 
-            root.right = self.insert(root.right, score, player) 
+            root.right = self.insert(root.right, score, joueur) 
         else:
             # Same score
-            self.liste_joueurs.append([player,score])
-            root.list_player.append(player)
+            self.liste_joueurs_score.append([joueur,score])
+            root.liste_joueurs_node.append(joueur)
             return root
   
         # Step 2 - Update the height of the  
@@ -64,111 +65,61 @@ class AVL_Tree:
   
         return root 
 
-    ''' Fonction delete qui ne fonctionne pas pour le moment, on verra à la fin du projet si jamais on a le temps
-    def delete(self, root, score, player, deletion = True): 
-  
-        # Step 1 - Perform standard BST delete 
-        if not root: 
-            return root 
-  
-        elif score < root.score: 
-            root.left = self.delete(root.left, score, player) 
-  
-        elif score > root.score: 
-            root.right = self.delete(root.right, score, player) 
-  
-        else: 
-            if(len(root.list_player) == 1):
 
-                if root.left is None: 
-                    temp = root.right 
-                    if(deletion) : self.liste_joueurs.remove([root.list_player[0],root.score])
-                    root = None      
-                    return temp 
-
-                elif root.right is None: 
-                    temp = root.left 
-                    if(deletion) : self.liste_joueurs.remove([root.list_player[0],root.score])
-                    root = None
-                    return temp 
-
-                if(deletion) :self.liste_joueurs.remove([root.list_player[0],root.score])
-                temp = self.getMinValueNode(root.right) 
-                root.score = temp.score
-                root.list_player = temp.list_player 
-                root.right = self.delete(root.right, 
-                                        temp.score, temp.list_player, deletion=False) 
-            elif(len(root.list_player) == 0):
-                root = None
-                return root
-            else : 
-                if(deletion) : 
-                    self.liste_joueurs.remove([player[0],score])
-                    root.list_player.remove(player[0])
-                else:
-
-                    for element in player.copy():
-                        root.list_player.remove(element)
-                    return self.delete(root, root.score, root.list_player, deletion=False)
-                    
-
-
-        # If the tree has only one node, 
-        # simply return it 
-        if root is None: 
-            return root 
-  
-        # Step 2 - Update the height of the  
-        # ancestor node 
-        root.height = 1 + max(self.getHeight(root.left), 
-                            self.getHeight(root.right)) 
-  
-        # Step 3 - Get the balance factor 
-        balance = self.getBalance(root) 
-  
-        # Step 4 - If the node is unbalanced,  
-        # then try out the 4 cases 
-        
-        if balance > 1 and self.getBalance(root.left) >= 0: 
-            return self.rightRotate(root) 
-  
-        
-        if balance < -1 and self.getBalance(root.right) <= 0: 
-            return self.leftRotate(root) 
-
-        
-        if balance > 1 and self.getBalance(root.left) < 0: 
-            root.left = self.leftRotate(root.left) 
-            return self.rightRotate(root) 
-  
-        
-        if balance < -1 and self.getBalance(root.right) > 0: 
-            root.right = self.rightRotate(root.right) 
-            return self.leftRotate(root) 
-  
-        return root
     '''
+    #* Function allowing the deletion of a node in the AVL
+    #* The data is actually in root, we will delete a node in root
+    #* We are also removing the player in question from the AVL Tree player list.
 
-    def delete(self, player_name): #pas besoin du score parce qu'on l'a déjà dans la liste des joueurs
+    #! This function is not recursive and is surely not optimized because here we make a copy of our AVL Tree without adding the element to remove
+    #! We had to do this because we were having issues with the basic recursive function to delete a node
+    #! As a matter of fact, by integrating a list for each node (essential for players with the same score), many problems were generated
+    #! when we wanted to recursively delete
+
+    #? nom_joueur : the name of the player to insert
+    '''
+    def delete(self, nom_joueur): #don't need the score because we already have it in the list of players
+        #Creation of the copies
         root_after_deletion = None
         myTree_after_deletion = AVL_Tree()
-        for joueur_score in self.liste_joueurs:
-            if (joueur_score[0] != player_name):
+        for joueur_score in self.liste_joueurs_score:
+            if (joueur_score[0] != nom_joueur): #If the player we are currently looking at is the same as the one we want to delete, we don't insert him in the copy
                 root_after_deletion = myTree_after_deletion.insert(root_after_deletion,joueur_score[1],joueur_score[0])
         return (myTree_after_deletion,root_after_deletion)
         
         
-    def update(self, root, player_name, new_score):
-        self,root = self.delete(player_name)
-        root = self.insert(root, new_score, player_name)
+    '''
+    #* Function allowing to update the player score
+    #* We will update the value in root to have an up-to-date node but also in the list of players of the AVL Tree
+
+    #? root: Root of the AVL containing all its child nodes
+    #? nom_joueur: the name of the player we want to update
+    #? new_score: new score to assign to the player we have put in parameter
+    '''
+    def update(self, root, nom_joueur, new_score):
+        self,root = self.delete(nom_joueur)
+        root = self.insert(root, new_score, nom_joueur)
         return self,root
 
+
+    '''
+    #* Function allowing to get the node with the smallest value from the node we are in
+    #* Used in some cases when we want to delete a node
+
+    #? root: node of the AVL Tree containing all of its child nodes
+    '''
     def getMinValueNode(self, root): 
         if root is None or root.left is None: 
             return root 
   
         return self.getMinValueNode(root.left) 
 
+
+    '''
+    #* Function allowing to make a left rotation for the AVL Tree (root)
+
+    #? z: AVL Tree node (root) with all its child nodes
+    '''
     def leftRotate(self, z): 
   
         y = z.right 
@@ -187,6 +138,12 @@ class AVL_Tree:
         # Return the new root 
         return y 
   
+    
+    '''
+    #* Function allowing to make a right rotation for the AVL Tree (root)
+
+    #? z: AVL Tree node (root) with all its child nodes
+    '''
     def rightRotate(self, z): 
   
         y = z.left 
@@ -205,18 +162,37 @@ class AVL_Tree:
         # Return the new root 
         return y 
   
+
+    '''
+    #* Function allowing to get the height of a node of the AVL Tree (root)
+
+    #? root: node of the AVL Tree with all its child nodes
+    '''
     def getHeight(self, root): 
         if not root: 
             return 0
   
         return root.height 
   
+
+    '''
+    #* Function allowing to obtain the balance of a node from a node of the AVL Tree (root)
+    #* To know if we should perform a rotation and if so, know which one to perform
+
+    #? root: node of the AVL Tree with all its child nodes
+    '''
     def getBalance(self, root): 
         if not root: 
             return 0
   
         return self.getHeight(root.left) - self.getHeight(root.right) 
   
+
+    '''
+    #* Function allowing to print nodes with the 'In Order' method
+
+    #? root: Root of the AVL containing all its child nodes
+    '''
     def printInorder(self,root): 
         if root: 
     
@@ -224,22 +200,31 @@ class AVL_Tree:
             self.printInorder(root.left) 
     
             # then print the data of node 
-            print("Score : {} ; Player List : {}".format(root.score, root.list_player)) 
+            print("Score : {} ; Player List : {}".format(root.score, root.liste_joueurs_node)) 
     
             # now recur on right child 
             self.printInorder(root.right)
             
-    def ListInorder(self,root, liste): 
+
+    '''
+    #* Function allowing to fill a list with the 'In Order' method
+    #* This list will therefore contain all the players of the AVL Tree (root) ranked from worst to best
+    #* Each index of this list will be a list composed of the name of the player and his score
+
+    #? root: Root of the AVL containing all its child nodes
+    #? list: list of players (to be declared empty before using this function)
+    '''
+    def ListInorder(self,root, liste_joueurs_inOrder): 
         if root: 
     
             # First recur on left child 
-            self.ListInorder(root.left, liste) 
+            self.ListInorder(root.left, liste_joueurs_inOrder) 
     
-            # then print the data of node 
-            for player in root.list_player:
-                liste.append([player,root.score])
+            #This for loop is necessary because if some players have the same score, we have to append all of them in the list 
+            for player in root.liste_joueurs_node:
+                liste_joueurs_inOrder.append([player,root.score])
     
             # now recur on right child 
-            self.ListInorder(root.right, liste)
+            self.ListInorder(root.right, liste_joueurs_inOrder)
 
           
