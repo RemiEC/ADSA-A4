@@ -2,24 +2,36 @@ from Node_Class import Node
 import random
 class AVL_Tree:
 
+    '''
+    #* Classe utilisée en tant qu'AVL Tree
 
+    #? liste_joueurs : Liste contenant pour chaque joueur, une autre liste composée de son nom et de son score
+    '''
     def __init__(self):
         self.liste_joueurs = []
 
+    '''
+    #* Fonction d'insertion d'une nouvelle node dans l'AVL, en effet c'est la variable root qui contiendra véritablement les données
+    #* La classe AVL permet de garantir la nature AVL de root via les différentes fonctions définies dedans
+
+    #? root : Root de l'AVL contenant toutes ses nodes enfants
+    #? score : score du player
+    #? player : Liste contenant le nom du player, 
+    '''
     def insert(self, root, score, player): 
       
         # Step 1 - Perform normal BST 
         if not root: 
-            self.liste_joueurs.append([player[0],score])
-            return Node(player,score) 
+            self.liste_joueurs.append([player,score])
+            return Node([player],score) 
         elif score < root.score: 
             root.left = self.insert(root.left, score, player) 
         elif score > root.score: 
             root.right = self.insert(root.right, score, player) 
         else:
             # Same score
-            self.liste_joueurs.append([player[0],score])
-            root.list_player.append(player[0])
+            self.liste_joueurs.append([player,score])
+            root.list_player.append(player)
             return root
   
         # Step 2 - Update the height of the  
@@ -141,8 +153,8 @@ class AVL_Tree:
         root_after_deletion = None
         myTree_after_deletion = AVL_Tree()
         for joueur_score in self.liste_joueurs:
-            if (joueur_score[0] != player_name[0]):
-                root_after_deletion = myTree_after_deletion.insert(root_after_deletion,joueur_score[1],[joueur_score[0]])
+            if (joueur_score[0] != player_name):
+                root_after_deletion = myTree_after_deletion.insert(root_after_deletion,joueur_score[1],joueur_score[0])
         return (myTree_after_deletion,root_after_deletion)
         
         
@@ -216,6 +228,7 @@ class AVL_Tree:
     
             # now recur on right child 
             self.printInorder(root.right)
+            
     def ListInorder(self,root, liste): 
         if root: 
     

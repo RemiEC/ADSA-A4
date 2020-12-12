@@ -4,9 +4,9 @@ from Fonctions_de_jeu import *
 def Test_Delete(root,myTree):
     print(myTree.liste_joueurs)
     myTree.printInorder(root)
-    myTree,root = myTree.delete(["Vadim"])
-    myTree,root = myTree.delete(["Bob"])
-    myTree,root = myTree.delete(["Yao"])
+    myTree,root = myTree.delete("Vadim")
+    myTree,root = myTree.delete("Bob")
+    myTree,root = myTree.delete("Yao")
     print()
     print ("Nouvelle version apres Delete")
     print()
@@ -15,8 +15,8 @@ def Test_Delete(root,myTree):
 
 def Test_Update(root,myTree):
     myTree.printInorder(root)
-    myTree,root = myTree.update(root, ["Bob"], 5)
-    myTree,root = myTree.update(root, ["Raphael"], 15)
+    myTree,root = myTree.update(root, "Bob", 5)
+    myTree,root = myTree.update(root, "Raphael", 15)
     print()
     print ("Nouvelle version apres Update")
     print()
@@ -57,7 +57,8 @@ def Test_Manche():
     myTree.printInorder(root)
 
 def Test_Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop):
-    Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop )
+    myTree,root = Jeu_Avant_Finalistes(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop )
+    Jeu_Finalistes(root, myTree,nb_joueur_par_game)
 
 if __name__ == "__main__":
     myTree = AVL_Tree()
@@ -67,8 +68,8 @@ if __name__ == "__main__":
     #Test_Distribution_Random_Games(root,myTree,2)
     #Test_Distribution_Ranked_Games(root,myTree,2)
     #Test_Manche()
-    nb_joueur_par_game = 2
-    taille_top = 2
-    nb_worst_players_to_drop = 2
+    nb_joueur_par_game = 4
+    taille_top = 4
+    nb_worst_players_to_drop = 4
     Test_Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop)
     
