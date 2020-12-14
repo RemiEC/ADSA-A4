@@ -79,7 +79,7 @@ Room_list_impostor = [
 
 
 '''
-#* Function printing a dataframe containing the travel time between each pair of room for crewmate or impostor
+#* Function printing a dataframe containing the optimized travel time between each pair of room for crewmate or impostor
 
 #? adjacency_matrix : Adjacency matrix of impostor or crewmate created from the png graph in the report
 #? Room_list : List of the Rooms
@@ -102,9 +102,16 @@ def Floyd_Warshall_Algorithm(adjacency_matrix, Room_list):
     return dataframe
         
 
+'''
+#* Function printing a dataframe containing the interval of travel time between each pair of room for which the traveler is considered as a impostor
+
+#? dataframe_crewmate : dataframe containing the optimized travel time between each pair of room for crewmate
+#? dataframe_impostor : dataframe containing the optimized travel time between each pair of room for impostor
+'''
 def interval_time_impostor(dataframe_crewmate, dataframe_impostor):
+    # We create a copy in order not to alter the original dataframe
     dataframe_interval = dataframe_crewmate.copy()
-    #We use the length of the crewmate dataframe because we don't want to affect the 'Vent btwn Shield-Nav' row and column
+    # We use the crewmate dataframe because we don't want to have the 'Vent btwn Shield-Nav' row and column
     for i in range (dataframe_crewmate.shape[0]):
         for j in range(dataframe_crewmate.shape[0]):
             dataframe_interval.iloc[i,j] = str("[{},{}[".format(dataframe_impostor.iloc[i,j],dataframe_crewmate.iloc[i,j]))
