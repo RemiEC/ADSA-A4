@@ -99,12 +99,27 @@ def Floyd_Warshall_Algorithm(adjacency_matrix, Room_list):
     pd.set_option("display.max_rows", None, "display.max_columns", None, 'display.width', None)
     print()
     print(dataframe)
+    return dataframe
         
-    
-# USING THE ALGORITHM
 
-# CREWMATE
-#Floyd_Warshall_Algorithm(adjacency_matrix_crewmate, Room_list_crewmate)
+def interval_time_impostor(dataframe_crewmate, dataframe_impostor):
+    dataframe_interval = dataframe_crewmate.copy()
+    #We use the length of the crewmate dataframe because we don't want to affect the 'Vent btwn Shield-Nav' row and column
+    for i in range (dataframe_crewmate.shape[0]):
+        for j in range(dataframe_crewmate.shape[0]):
+            dataframe_interval.iloc[i,j] = str("[{},{}[".format(dataframe_impostor.iloc[i,j],dataframe_crewmate.iloc[i,j]))
+    print(dataframe_interval)
 
-# IMPOSTOR
-Floyd_Warshall_Algorithm(adjacency_matrix_impostor, Room_list_impostor)
+if __name__ == "__main__":
+    # USING THE ALGORITHM
+
+    # CREWMATE
+    dataframe_crewmate = Floyd_Warshall_Algorithm(adjacency_matrix_crewmate, Room_list_crewmate)
+
+    # IMPOSTOR
+    dataframe_impostor = Floyd_Warshall_Algorithm(adjacency_matrix_impostor, Room_list_impostor)
+
+    print()
+    interval_time_impostor(dataframe_crewmate, dataframe_impostor)
+
+
