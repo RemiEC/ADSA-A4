@@ -62,7 +62,7 @@ if __name__ == '__main__':
     }
 
     # Starting rooms
-    starting_rooms = ["Upper E","Medbay","Between Storage-Shield","Weapons"]
+    starting_rooms = ["Upper E","Medbay","Between Storage-Shield","Weapons","Storage"]
 
     for start in starting_rooms:
         # add starting room to the path
