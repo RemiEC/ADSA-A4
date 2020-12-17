@@ -110,5 +110,5 @@ if __name__ == "__main__":
     #Test_Random_Games(root,myTree,2)
     #Test_Ranked_Games(root,myTree,2)
     #Test_Manche()
-    #Test_Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop)
+    Test_Jeu(root, myTree,nb_joueur_par_game, taille_top, nb_worst_players_to_drop)
     

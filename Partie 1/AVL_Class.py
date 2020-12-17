@@ -227,4 +227,23 @@ class AVL_Tree:
             # now recur on right child 
             self.ListInorder(root.right, liste_joueurs_inOrder)
 
-          
+    
+    '''
+    #* Function allowing to fill a list with the 'In Order' 
+    #* This list will therefore contain all the players of the AVL Tree (root) ranked from worst to best
+    #* Each index of this list will be a list composed of a list of players name and a score
+
+    #? root: Root of the AVL containing all its child nodes
+    #? list: list of players (to be declared empty before using this function)
+    '''
+    def ListInorder_For_Drop(self,root, liste_joueurs_inOrder): 
+        if root: 
+    
+            # First recur on left child 
+            self.ListInorder_For_Drop(root.left, liste_joueurs_inOrder) 
+    
+            #This for loop is necessary because if some players have the same score, we have to append all of them in the list 
+            liste_joueurs_inOrder.append([root.liste_joueurs_node,root.score])
+    
+            # now recur on right child 
+            self.ListInorder_For_Drop(root.right, liste_joueurs_inOrder)

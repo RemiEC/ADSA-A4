@@ -79,7 +79,7 @@ def Random_Games(root,myTree, nb_joueur_par_game):
 def Ranked_Games(root,myTree, nb_joueur_par_game):
     liste_joueurs_score_ranked = [] #Will be modified in the function used below
     myTree.ListInorder(root, liste_joueurs_score_ranked)
-    nb_games = int(len(liste_joueurs_score_ranked)/nb_joueur_par_game)
+    nb_games = int(len(myTree.liste_joueurs_score)/nb_joueur_par_game)
 
     liste_all_games = [] #List in which we will have all the game 
     for i in range(nb_games):
@@ -147,10 +147,20 @@ def Round(root, myTree, nb_joueur_par_game,random_games= False):
 '''
 def Drop_Worst(root, myTree, nb_worst_players_to_drop):
     classement = [] #Will be modified in the function used below
-    myTree.ListInorder(root, classement)
-    players_to_be_deleted = classement[:nb_worst_players_to_drop] #We take only the X first players because they are the ones that will be dropped
-    for player_score in players_to_be_deleted: #We go through this list and we delete each player in the AVL Tree
-        myTree,root = myTree.delete(player_score[0])
+    myTree.ListInorder_For_Drop(root, classement)
+    players_to_be_deleted = []
+    for liste_players_score in classement: #We will drop the X first players
+        while(len(liste_players_score[0]) > 0 and nb_worst_players_to_drop > 0): # there is no more players that have this score or no more players to drop so we can go out of the loop
+            index_player_to_delete = random.choice(range(len(liste_players_score[0]))) #If some players have the same score, we select one of them randomly
+            players_to_be_deleted.append(liste_players_score[0][index_player_to_delete])
+            liste_players_score[0].remove(liste_players_score[0][index_player_to_delete])
+            nb_worst_players_to_drop-=1
+
+        if (nb_worst_players_to_drop == 0): # Break again as there are no more players to drop
+            break
+
+    for player_name in players_to_be_deleted: #We go through this list and we delete each player in the AVL Tree
+        myTree,root = myTree.delete(player_name)
     return myTree,root
 
 
