@@ -236,14 +236,14 @@ class AVL_Tree:
     #? root: Root of the AVL containing all its child nodes
     #? list: list of players (to be declared empty before using this function)
     '''
-    def ListInorder_For_Drop(self,root, liste_joueurs_inOrder): 
+    def ListInorder_For_Ties(self,root, liste_joueurs_inOrder): 
         if root: 
     
             # First recur on left child 
-            self.ListInorder_For_Drop(root.left, liste_joueurs_inOrder) 
+            self.ListInorder_For_Ties(root.left, liste_joueurs_inOrder) 
     
-            #This for loop is necessary because if some players have the same score, we have to append all of them in the list 
+            #Here we append the list of all the players having the same score and their score to deal with the case where some players are tied when dropping players or doing the podium
             liste_joueurs_inOrder.append([root.liste_joueurs_node,root.score])
     
             # now recur on right child 
-            self.ListInorder_For_Drop(root.right, liste_joueurs_inOrder)
+            self.ListInorder_For_Ties(root.right, liste_joueurs_inOrder)

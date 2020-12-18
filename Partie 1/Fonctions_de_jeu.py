@@ -147,7 +147,7 @@ def Round(root, myTree, nb_joueur_par_game,random_games= False):
 '''
 def Drop_Worst(root, myTree, nb_worst_players_to_drop):
     classement = [] #Will be modified in the function used below
-    myTree.ListInorder_For_Drop(root, classement)
+    myTree.ListInorder_For_Ties(root, classement)
     players_to_be_deleted = []
     for liste_players_score in classement: #We will drop the X first players
         while(len(liste_players_score[0]) > 0 and nb_worst_players_to_drop > 0): # there is no more players that have this score or no more players to drop so we can go out of the loop
@@ -214,16 +214,28 @@ def Jeu_Finalistes(root, myTree,nb_joueur_par_game):
         # Reset score of each player
         myTree,root = myTree.update(root,joueur_score[0],0)
     print()
-    #We do the 5 ranked games
+    # We do the 5 ranked games
     for i in range(5):
         myTree,root = Round(root, myTree, nb_joueur_par_game)
         print("Resultats game finalistes n{}:".format(i+1))
         myTree.printInorder(root)
         print()
+    # We select the players for the podium
+    classement = [] #Will be modified in the function used below
+    myTree.ListInorder_For_Ties(root, classement)
+    classement = classement[::-1] # We inverse the list as it's an InOrder list, the best players are at the end and we want them at the beginning to be easier to go through
+    winners = []
+    nb_winners = 3
+    for liste_players_score in classement: #We will add the top 3 players (podium) the winners list
+        while(len(liste_players_score[0]) > 0 and nb_winners > 0): # there is no more players that have this score or no more players to add to the podium
+            index_winner = random.choice(range(len(liste_players_score[0]))) #If some players have the same score, we select one of them randomly
+            winners.append([liste_players_score[0][index_winner],liste_players_score[1]])
+            liste_players_score[0].remove(liste_players_score[0][index_winner])
+            nb_winners-=1
+
+        if (nb_winners == 0): # Break again as there are no more players to add to the podium
+            break
     print("PODIUM")
-    classement = []
-    myTree.ListInorder(root, classement)
-    podium = classement[-3:] #We take the last 3 of this list as it's an InOrder list, the better players are at the end
-    print("TOP 3 : {} avec {} points".format(podium[0][0],podium[0][1]))
-    print("TOP 2 : {} avec {} points".format(podium[1][0],podium[1][1]))
-    print("TOP 1 : {} avec {} points".format(podium[2][0],podium[2][1]))
+    print("TOP 3 : {} avec {} points".format(winners[2][0],winners[2][1]))
+    print("TOP 2 : {} avec {} points".format(winners[1][0],winners[1][1]))
+    print("TOP 1 : {} avec {} points".format(winners[0][0],winners[0][1]))
